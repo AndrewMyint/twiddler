@@ -16,3 +16,21 @@
 body{
 	background-color: #f1f1f1;
 }
+.tweetBox{
+  padding: 10px 20px;
+  margin: auto 144px;
+  border: 2px solid green;
+
+}
+.textBox{
+  display: block;
+  margin: auto;
+  width: 400px;
+  height: 70px;
+ 
+}
+.submit{
+	display: block;
+	position: relative;
+	margin: auto;
+}
