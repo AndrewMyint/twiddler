@@ -6,13 +6,19 @@
     <link rel = "stylesheet" type = "text/css" href = "style.css">
   </head>
   <body>
-    <div class = "container"> 
-       
-       
-  
-     
+    <div class = "head-container">
+      <div class = "tweetBox"> 
+        <input class = "textBox" type="text" name="newTweet" placeholder="This is new Tweet">
+        <button name = "submit" type = "submit">Tweet</button>
+      </div>   
+        <div class = "container">    
+        </div>
+      
     </div>
-          <script>
+
+
+
+      <script>
         $(document).ready(function(){
           var $container = $('div.container');
           $container.html('');
@@ -24,7 +30,9 @@
             var $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
             var $tweet = $('<p class = "tweet" > </p>');
             var $content = $('<div class = "content"> </div>');
-
+            // adding username to content
+           
+            //adding image to content
             $avater.appendTo($content);
             $username.text(tweet.user); 
             $username.appendTo($content);
@@ -37,8 +45,61 @@
 
             index -= 1;
           }
+          $("button").click(function (event) {
+            var timeStamp = new Date();
+            var time = generateDateFormat(timeStamp);
+
+            var newTweet = $("input").val();
+            var $username = $('<div class = "username"> </div>');
+            var $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
+            var $tweet = $('<p class = "tweet"> </p>')
+
+            $username.text("AndrewMyint");
+            $tweet.text("@AndrewMyint: " + newTweet + " " + time);
+
+            $tweet.prependTo($content);
+            $username.prependTo($content);
+            $avater.prependTo($content);
+
+            $content.prependTo($container);
+
+
+          })
+
+          function generateDateFormat(timeStamp) {
+  
+            var year = timeStamp.getFullYear();
+            var shortMonthName = new Intl.DateTimeFormat("en-US", { month: "short" }).format;
+            var month = shortMonthName(timeStamp);
+            var day = timeStamp.getDate();
+            var time = timeStamp.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+
+            var arr = [];
+            arr.push(time);
+            arr.push(day);
+            arr.push(month);
+            arr.push(year);
+
+            return arr.join(' ');
+          }
+
          });
        </script>
 
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
