@@ -1,0 +1,18 @@
+.container {
+  border: 5px solid #bdc3c7;
+  margin: auto 144px;
+  padding: 56px 14px 15px 14px;
+}
+.content{
+	border: 2px solid red;
+}
+.tweet{
+	display: block;
+	padding: 9px 12px;
+	background-color: white;
+	border-bottom: 2px solid #f1f1f1;
+
+}
+body{
+	background-color: #f1f1f1;
+}
