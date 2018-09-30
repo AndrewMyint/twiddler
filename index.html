@@ -6,11 +6,17 @@
     <link rel = "stylesheet" type = "text/css" href = "style.css">
   </head>
   <body>
+    <div class = 'header'>
+      <h1>Twiddler</h1>
+    </div>
+    
     <div class = "head-container">
+
       <div class = "tweetBox"> 
         <input class = "textBox" type="text" name="newTweet" placeholder="This is new Tweet">
-        <button name = "submit" type = "submit">Tweet</button>
-      </div>   
+        <button class = "btn" name = "submit" type = "submit">Tweet</button>
+      </div> 
+
         <div class = "container">    
         </div>
       
@@ -20,24 +26,30 @@
 
       <script>
         $(document).ready(function(){
-          var $container = $('div.container');
+          var $container = $('.container');
           $container.html('');
 
           var index = streams.home.length - 1;
           while(index >= 0){
             var tweet = streams.home[index];
-            var $username = $('<div class = "username"> </div>');
-            var $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
-            var $tweet = $('<p class = "tweet" > </p>');
-            var $content = $('<div class = "content"> </div>');
-            // adding username to content
-           
-            //adding image to content
-            $avater.appendTo($content);
-            $username.text(tweet.user); 
-            $username.appendTo($content);
+         
+            var $username = $('<span class = "username"> </span>');
+            var $userTag = $('<span class = "userTag"> </span>')
+            var $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
 
-            $tweet.text('@' + tweet.user + ': ' + tweet.message);
+            var $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
+            var $tweet = $('<div class = "tweet"><p> </p></div>');
+            var $content = $('<div class = "content"> </div>');
+            
+            $username.text(tweet.user);
+            $userTag.text('@' + tweet.user);
+            $tweet.text(tweet.message);
+            $username.appendTo($itemHeaderGroup);
+            $userTag.appendTo($itemHeaderGroup);
+
+            $avater.appendTo($content); 
+            $itemHeaderGroup.appendTo($content);
+
             $tweet.appendTo($content);
 
             $content.appendTo($container);
@@ -45,21 +57,33 @@
 
             index -= 1;
           }
+
           $("button").click(function (event) {
             var timeStamp = new Date();
             var time = generateDateFormat(timeStamp);
 
             var newTweet = $("input").val();
-            var $username = $('<div class = "username"> </div>');
+            var $username = $('<span class = "username"> </span>');
+            var $userTag = $('<span class = "userTag"> </span>');
+            var $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
+
             var $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
-            var $tweet = $('<p class = "tweet"> </p>')
+            var $tweet = $('<div class = "tweet"><p> </p></div>')
+            var $content = $('<div class = "content"> </div>');
 
             $username.text("AndrewMyint");
-            $tweet.text("@AndrewMyint: " + newTweet + " " + time);
+            $userTag.text('@' + "andrewMyint");
+            $tweet.text(newTweet + " " + time);
 
-            $tweet.prependTo($content);
-            $username.prependTo($content);
-            $avater.prependTo($content);
+            $username.appendTo($itemHeaderGroup);
+            $userTag.appendTo($itemHeaderGroup);
+
+            $avater.appendTo($content);
+            $itemHeaderGroup.appendTo($content); 
+            $tweet.appendTo($content);
+            
+            
+            
 
             $content.prependTo($container);
 
