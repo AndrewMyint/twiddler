@@ -11,11 +11,16 @@
     </div>
     
     <div class = "head-container">
+ 
+        <div class = "tweetBox"> 
+          
+          <input id = "currentUser" class = "textBox" type="textBox" name="loginName" placeholder="username">
+          <button class = "btn" name = "submit" type = "submit">Tweet</button>
+          <input id = "textBox" class = "textBox" type="text" name="newTweet" placeholder="This is new Tweet">
 
-      <div class = "tweetBox"> 
-        <input class = "textBox" type="text" name="newTweet" placeholder="This is new Tweet">
-        <button class = "btn" name = "submit" type = "submit">Tweet</button>
-      </div> 
+        </div> 
+
+     
 
         <div class = "container">    
         </div>
@@ -62,7 +67,8 @@
             var timeStamp = new Date();
             var time = generateDateFormat(timeStamp);
 
-            var newTweet = $("input").val();
+            var newTweet = $("#textBox").val();
+            var currentUser = $("#currentUser").val();
             var $username = $('<span class = "username"> </span>');
             var $userTag = $('<span class = "userTag"> </span>');
             var $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
@@ -71,8 +77,8 @@
             var $tweet = $('<div class = "tweet"><p> </p></div>')
             var $content = $('<div class = "content"> </div>');
 
-            $username.text("AndrewMyint");
-            $userTag.text('@' + "andrewMyint");
+            $username.text(currentUser);
+            $userTag.text('@' + currentUser);
             $tweet.text(newTweet + " " + time);
 
             $username.appendTo($itemHeaderGroup);
