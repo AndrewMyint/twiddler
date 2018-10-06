@@ -1,0 +1,22 @@
+{
+  "name": "rpt12-twiddler",
+  "version": "1.0.0",
+  "description": "packageDemo",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrewMyint/rpt12-twiddler.git"
+  },
+  "author": "Andrwe Myint",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndrewMyint/rpt12-twiddler/issues"
+  },
+  "homepage": "https://github.com/AndrewMyint/rpt12-twiddler#readme",
+  "dependencies": {
+    "moment": "^2.22.2"
+  }
+}

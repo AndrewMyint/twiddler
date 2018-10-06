@@ -3,11 +3,12 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="node_modules/moment/moment.js"></script>
     <link rel = "stylesheet" type = "text/css" href = "style.css">
   </head>
   <body>
     <div class = 'header'>
-      <h1>Twiddler</h1>
+      <h1 id = 'head'>Twiddler</h1>
     </div>
     
     <div class = "head-container">
@@ -16,12 +17,10 @@
           
           <input id = "currentUser" class = "textBox" type="textBox" name="loginName" placeholder="username">
           <button class = "btn" name = "submit" type = "submit">Tweet</button>
-          <input id = "textBox" class = "textBox" type="text" name="newTweet" placeholder="This is new Tweet">
+          <textarea id = "textArea"  cols = "81" rows= "5"></textarea>
 
-        </div> 
-
-     
-
+        </div>  
+ 
         <div class = "container">    
         </div>
       
@@ -31,16 +30,19 @@
 
       <script>
         $(document).ready(function(){
+         
           var $container = $('.container');
           $container.html('');
 
           var index = streams.home.length - 1;
+
           while(index >= 0){
             var tweet = streams.home[index];
          
             var $username = $('<span class = "username"> </span>');
             var $userTag = $('<span class = "userTag"> </span>')
             var $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
+            var $time = $('<span id = "time"> </span>');
 
             var $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
             var $tweet = $('<div class = "tweet"><p> </p></div>');
@@ -49,8 +51,11 @@
             $username.text(tweet.user);
             $userTag.text('@' + tweet.user);
             $tweet.text(tweet.message);
+           // $time.text(time);
+
             $username.appendTo($itemHeaderGroup);
             $userTag.appendTo($itemHeaderGroup);
+            //$time.appendTo($content); 
 
             $avater.appendTo($content); 
             $itemHeaderGroup.appendTo($content);
@@ -62,16 +67,19 @@
 
             index -= 1;
           }
-
+          
           $("button").click(function (event) {
             var timeStamp = new Date();
-            var time = generateDateFormat(timeStamp);
+            var time = moment().format("h:mm a - D MMM YYYY");
 
-            var newTweet = $("#textBox").val();
+            var newTweet = $("#textArea").val();
             var currentUser = $("#currentUser").val();
             var $username = $('<span class = "username"> </span>');
             var $userTag = $('<span class = "userTag"> </span>');
+            var $timesAgo = $('<span id = "timesAgo" </span>');
+            var $time = $('<span id = "time"> </span>');
             var $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
+
 
             var $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
             var $tweet = $('<div class = "tweet"><p> </p></div>')
@@ -79,22 +87,39 @@
 
             $username.text(currentUser);
             $userTag.text('@' + currentUser);
-            $tweet.text(newTweet + " " + time);
+            $timesAgo.text("- " + moment(timeStamp).fromNow());
+            $tweet.text(newTweet);
+            $time.text(time);
+            
 
-            $username.appendTo($itemHeaderGroup);
+            
+            $username.appendTo($itemHeaderGroup)
             $userTag.appendTo($itemHeaderGroup);
-
+            //$timesAgo.appendTo($itemHeaderGroup);
+            //   function updateContent(){
+            //    $timesAgo.text(moment(new Date()).fromNow());
+            //    
+            
+            // }setInterval(updateContent(), 2000);
+            $timesAgo.appendTo($itemHeaderGroup);
             $avater.appendTo($content);
             $itemHeaderGroup.appendTo($content); 
-            $tweet.appendTo($content);
-            
-            
-            
+            $tweet.appendTo($content); 
+            $time.appendTo($content); 
 
             $content.prependTo($container);
+           // var count = 1;
+
+            setInterval(function() {
+             // count++;
+              $timesAgo.html("- " + moment(timeStamp).fromNow());
+            }, 2000);
+            
+
 
 
           })
+          
 
           function generateDateFormat(timeStamp) {
   
@@ -111,6 +136,9 @@
             arr.push(year);
 
             return arr.join(' ');
+          }
+          function updateTime(){
+            return setInterval(moment().fromNow(), 2000);
           }
 
          });
