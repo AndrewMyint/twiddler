@@ -17,6 +17,7 @@
           <img id = "avater" class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"> 
           <input id = "currentUser" class = "textBox" type="textBox" name="loginName" placeholder="username">
           <button class = "btn" name = "submit" type = "submit">Tweet</button>
+          <span class = "message" > Tweeted !!! </span>
           <textarea id = "textArea"  cols = "150" rows= "5"></textarea>
 
         </div>  
@@ -26,14 +27,10 @@
       
     </div>
 
-
-
       <script>
         $(document).ready(function(){
-
+    
           var $container = $('.container');
-
-        //  var index = streams.home.length - 1;
           var index = 0;
           var oldTweets = streams.home.length;
           var newTweets = 0;
@@ -42,7 +39,7 @@
           checkNewTweet(oldTweets);
 
           function  checkNewTweet(oldTweets){
-            console.log("old Tweets " + oldTweets);
+           // console.log("old Tweets " + oldTweets);
             var currentTweets = count();
             if(currentTweets > oldTweets){
               newTweets += (currentTweets - oldTweets);
@@ -51,8 +48,8 @@
             setTimeout(checkNewTweet, 4100, oldTweets);
             $(".notification").text("You have " + newTweets + " new Tweets");
             $(".notification").slideDown(400);
-            console.log("currentTweets " + currentTweets);
-            console.log("new Tweets " + newTweets);
+            //console.log("currentTweets " + currentTweets);
+            //console.log("new Tweets " + newTweets);
           }
 
 
@@ -63,12 +60,12 @@
           function generateTweet(){
          
               while(index < streams.home.length){
-
                 var tweet = streams.home[index];
-                var $username, $userTag, $itemHeaderGroup, $time, $avater, $tweet, $content;
-              
-                generateTag();
+                var $username, $userTag, $itemHeaderGroup, $time, $avater, $tweet, $content, $timesAgo;
+                var timeStamp = streams.home[index].create_at;
+                generateTag(index);
                 appendTag(tweet);
+                calculateTimesAgo(index);
                 index ++;
               }
                setTimeout(function(){
@@ -76,9 +73,10 @@
                 }, 4000);
             }
 
-          function generateTag(){
+          function generateTag(index){
             $username = $('<a href="javascript:;" class = "username"> </a>');
             $userTag = $('<span class = "userTag"> </span>')
+            $timesAgo = $('<span id = "timesAgo" class =' + index + '> </span>');
             $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
             $time = $('<span id = "time"> </span>');
             $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
@@ -86,21 +84,30 @@
             $content = $('<div class = "content"> </div>');
           }
 
-          function appendTag(tweet) {
+          function appendTag(tweet, timeStamp) {
             $username.text(tweet.user);
             $userTag.text('@' + tweet.user);
             $tweet.text(tweet.message);
+            $timesAgo.text("- " + moment(timeStamp).fromNow());
+
+            $time.text(moment(timeStamp).format("h:mm a - D MMM YYYY"))
 
             $username.appendTo($itemHeaderGroup);
             $userTag.appendTo($itemHeaderGroup);
+            $timesAgo.appendTo($itemHeaderGroup);
             $avater.appendTo($content); 
             $itemHeaderGroup.appendTo($content);
             $tweet.appendTo($content);
+            $time.appendTo($content); 
             $content.prependTo($container);
           }
 
-
-
+          function calculateTimesAgo(index){
+            setInterval(function(index){
+                 $("." + index ).html("- " + moment(streams.home[index].created_at).fromNow());
+            }, 2000, index)                  
+          }
+          
           $("#textArea").hide();
           $("#noti").hide();
           $(".content").addClass('active');
@@ -150,14 +157,15 @@
             $time.appendTo($content);    
 
             $content.prependTo($container);
+            $(".message").addClass("active");
+
+            setTimeout(function () {
+              $(".message").removeClass("active");
+            }, 2000)
 
             setInterval(function() {
               $timesAgo.html("- " + moment(timeStamp).fromNow());
             }, 2000);
-            //username = $(".username");
-
-
-           // filterByUserName();
           })
           filterByUserName();
 
