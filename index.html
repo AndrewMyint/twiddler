@@ -14,15 +14,15 @@
     <div class = "head-container">
  
         <div class = "tweetBox"> 
-          
+          <img id = "avater" class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"> 
           <input id = "currentUser" class = "textBox" type="textBox" name="loginName" placeholder="username">
           <button class = "btn" name = "submit" type = "submit">Tweet</button>
-          <textarea id = "textArea"  cols = "81" rows= "5"></textarea>
+          <textarea id = "textArea"  cols = "150" rows= "5"></textarea>
 
         </div>  
- 
-        <div class = "container">    
-        </div>
+        <div id = "noti"> Back </div>
+        <span class = 'notification'></span>
+        <div class = "container"></div>
       
     </div>
 
@@ -30,57 +30,106 @@
 
       <script>
         $(document).ready(function(){
-         
+
           var $container = $('.container');
-          $container.html('');
 
-          var index = streams.home.length - 1;
+        //  var index = streams.home.length - 1;
+          var index = 0;
+          var oldTweets = streams.home.length;
+          var newTweets = 0;
 
-          while(index >= 0){
-            var tweet = streams.home[index];
+          generateTweet();
+          checkNewTweet(oldTweets);
+
+          function  checkNewTweet(oldTweets){
+            console.log("old Tweets " + oldTweets);
+            var currentTweets = count();
+            if(currentTweets > oldTweets){
+              newTweets += (currentTweets - oldTweets);
+              oldTweets = currentTweets;
+            }
+            setTimeout(checkNewTweet, 4100, oldTweets);
+            $(".notification").text("You have " + newTweets + " new Tweets");
+            $(".notification").slideDown(400);
+            console.log("currentTweets " + currentTweets);
+            console.log("new Tweets " + newTweets);
+          }
+
+
+          function count(){
+            return streams.home.length;
+          }
+
+          function generateTweet(){
          
-            var $username = $('<span class = "username"> </span>');
-            var $userTag = $('<span class = "userTag"> </span>')
-            var $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
-            var $time = $('<span id = "time"> </span>');
+              while(index < streams.home.length){
 
-            var $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
-            var $tweet = $('<div class = "tweet"><p> </p></div>');
-            var $content = $('<div class = "content"> </div>');
-            
+                var tweet = streams.home[index];
+                var $username, $userTag, $itemHeaderGroup, $time, $avater, $tweet, $content;
+              
+                generateTag();
+                appendTag(tweet);
+                index ++;
+              }
+               setTimeout(function(){
+                generateTweet();
+                }, 4000);
+            }
+
+          function generateTag(){
+            $username = $('<a href="javascript:;" class = "username"> </a>');
+            $userTag = $('<span class = "userTag"> </span>')
+            $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
+            $time = $('<span id = "time"> </span>');
+            $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
+            $tweet = $('<div class = "tweet"><p> </p></div>');
+            $content = $('<div class = "content"> </div>');
+          }
+
+          function appendTag(tweet) {
             $username.text(tweet.user);
             $userTag.text('@' + tweet.user);
             $tweet.text(tweet.message);
-           // $time.text(time);
 
             $username.appendTo($itemHeaderGroup);
             $userTag.appendTo($itemHeaderGroup);
-            //$time.appendTo($content); 
-
             $avater.appendTo($content); 
             $itemHeaderGroup.appendTo($content);
-
             $tweet.appendTo($content);
-
-            $content.appendTo($container);
-           
-
-            index -= 1;
+            $content.prependTo($container);
           }
-          
+
+
+
+          $("#textArea").hide();
+          $("#noti").hide();
+          $(".content").addClass('active');
+
+          $(".textBox").click(function (event) {
+            $("#textArea").slideToggle(200);
+            event.stopPropagation();
+          })
+
+          $(".notification").click(function (event) {
+            $(".content").addClass('active'); 
+            newTweets = 0;
+            $(".notification").slideUp(400);
+            $(".tweetBox").fadeIn();
+            $("#noti").fadeOut();
+          })
+
           $("button").click(function (event) {
+           
             var timeStamp = new Date();
             var time = moment().format("h:mm a - D MMM YYYY");
 
             var newTweet = $("#textArea").val();
             var currentUser = $("#currentUser").val();
-            var $username = $('<span class = "username"> </span>');
+            var $username = $('<a href="javascript:;" class = "username"> </a>');
             var $userTag = $('<span class = "userTag"> </span>');
             var $timesAgo = $('<span id = "timesAgo" </span>');
             var $time = $('<span id = "time"> </span>');
             var $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
-
-
             var $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
             var $tweet = $('<div class = "tweet"><p> </p></div>')
             var $content = $('<div class = "content"> </div>');
@@ -91,57 +140,53 @@
             $tweet.text(newTweet);
             $time.text(time);
             
-
-            
             $username.appendTo($itemHeaderGroup)
             $userTag.appendTo($itemHeaderGroup);
-            //$timesAgo.appendTo($itemHeaderGroup);
-            //   function updateContent(){
-            //    $timesAgo.text(moment(new Date()).fromNow());
-            //    
-            
-            // }setInterval(updateContent(), 2000);
+           
             $timesAgo.appendTo($itemHeaderGroup);
             $avater.appendTo($content);
             $itemHeaderGroup.appendTo($content); 
             $tweet.appendTo($content); 
-            $time.appendTo($content); 
+            $time.appendTo($content);    
 
             $content.prependTo($container);
-           // var count = 1;
 
             setInterval(function() {
-             // count++;
               $timesAgo.html("- " + moment(timeStamp).fromNow());
             }, 2000);
-            
+            //username = $(".username");
 
 
-
+           // filterByUserName();
           })
-          
+          filterByUserName();
 
-          function generateDateFormat(timeStamp) {
-  
-            var year = timeStamp.getFullYear();
-            var shortMonthName = new Intl.DateTimeFormat("en-US", { month: "short" }).format;
-            var month = shortMonthName(timeStamp);
-            var day = timeStamp.getDate();
-            var time = timeStamp.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+          function filterByUserName(username){
+              $("body").on('click', '.username', function (event) {
+              //alert($(this).$(".content"));
+                $("div.content.active").removeClass('active');
+                $(".tweetBox").fadeOut(0);
+                $("#noti").fadeIn(0);
 
-            var arr = [];
-            arr.push(time);
-            arr.push(day);
-            arr.push(month);
-            arr.push(year);
 
-            return arr.join(' ');
+                var currentUser = $(this).text();
+                var username = $(".username");
+                var currentUserArray = username.filter(function (index) {
+                  return $(this).text() === currentUser;
+                }).each(function (index) {
+                  $(this).parents().eq(1).addClass('active');
+                })
+
+            })
           }
-          function updateTime(){
-            return setInterval(moment().fromNow(), 2000);
-          }
 
-         });
+          $("#noti").click(function (event) {
+            $("#noti").fadeOut(0);
+            $(".tweetBox").fadeIn(0);
+            $(".content").addClass('active');  
+          })
+
+      });
        </script>
 
   </body>
