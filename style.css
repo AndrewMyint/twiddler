@@ -3,6 +3,7 @@ body{
 	background-color: #f1f1f1;
 	font-family: Helvetica;
 	font-size: 14px;
+
 }
 h1{
 	display: block;
@@ -26,6 +27,12 @@ p{
     margin-inline-start: 0px;
     margin-inline-end: 0px;*/
 
+}
+a{
+	text-decoration: none;
+}
+a:hover{
+	color: #1DA1F2;
 }
 .head-container{
 	
@@ -86,6 +93,46 @@ p{
 	margin-left: 35px;
 	font-style: oblique;
 }
+.notiBar{
+	display: block;
+	border: none;
+	background-color: #e8f5fd;
+	width: 100%;
+	height: 20px;
+	
+}
+
+.notification{
+	float: right;
+	display: inline-block;
+	text-decoration: none;
+	background-color: #3494e638;
+	color: #14171a;;
+	color: #14171a;
+	height: 100%;
+	padding: 0 10px;
+}
+
+.back{
+	float: left;
+	display: inline-block;
+	text-decoration: none;
+	background-color: #3494e638;
+	color: #14171a;;
+	color: #14171a;
+	padding: 0 10px;
+	margin: 0 2px;
+	height: 100%;
+	
+}
+
+.refresh{
+	padding: 0 4px;
+	display: inline-block;
+	background-color: #3494e638;
+	color: #14171a;
+	height: 100%;
+}
 
 .newTweet{
 	display: none;
@@ -100,6 +147,13 @@ p{
 }
 .content{
 	display: none;
+	margin: 0;
+	width : 100;
+	background-color: white;
+	border-top: 2px solid #f1f1f1;
+	word-wrap: break-word;
+	overflow: auto;
+	position: relative;
 }
 .content.active{
 	display: block;
@@ -109,6 +163,7 @@ p{
 	border-top: 2px solid #f1f1f1;
 	word-wrap: break-word;
 	overflow: auto;
+	position: relative;
 }
 .itemHeaderGroup{
 	display: block;
@@ -123,9 +178,7 @@ p{
     font-weight: bold;
     text-decoration: none;
 }
-a:hover{
-	color: #1DA1F2;
-}
+
 
 .userTag{
 	display: inline-block;
