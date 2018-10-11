@@ -7,7 +7,7 @@ body{
 }
 h1{
 	display: block;
-	background: #1DA1F2;
+	background: #7dc21e;
 	box-sizing: border-box;
 	font-size: 34px;
 	color: white;
@@ -32,7 +32,7 @@ a{
 	text-decoration: none;
 }
 a:hover{
-	color: #1DA1F2;
+	color: #7dc21e;
 }
 .head-container{
 	
@@ -44,7 +44,7 @@ a:hover{
 .tweetBox{
   	margin: auto;
  	word-wrap: break-word;
-	background-color: #e8f5fd;
+	background-color: white;
 	padding-bottom: 10px;
 }
 #avater{
@@ -59,7 +59,8 @@ a:hover{
 	width: 40%;
   	height: 15px;
   	border-radius: 10px;
- 	border-color: rgb(29, 161, 242)
+ 	outline: none;
+ 	border: 1px solid #7dc21e;
 }
 
 #textArea{
@@ -70,7 +71,8 @@ a:hover{
 	height: 100px;
 	border-radius: 10px;
 	margin-left: 77px;
-	border-color: rgb(29, 161, 242)
+	border-color: #7dc21e;
+	outline: none;
 }
 
 .btn{
@@ -80,9 +82,18 @@ a:hover{
 	letter-spacing: normal;
 	height: 40px;
   	width: 100px;
-  	background-color: #1DA1F2;
   	border-radius: 20px;
+    color: #7dc21e;
+    border-color: #7dc21e;
+    background: transparent;
+    outline: none;
 }
+.btn:hover{
+	color: white;
+    background: #7dc21e;
+    border-color: #7dc21e;
+}
+
 .message{
 	display: none;
 }
@@ -93,22 +104,23 @@ a:hover{
 	margin-left: 35px;
 	font-style: oblique;
 }
+
 .notiBar{
 	display: block;
 	border: none;
-	background-color: #e8f5fd;
+
+	background-color: white;
 	width: 100%;
-	height: 20px;
-	
+	height: 20px;	
 }
 
 .notification{
 	float: right;
 	display: inline-block;
 	text-decoration: none;
-	background-color: #3494e638;
-	color: #14171a;;
-	color: #14171a;
+	background-color: white;
+	color: #7dc21e;
+    border-color: #7dc21e;
 	height: 100%;
 	padding: 0 10px;
 }
@@ -117,21 +129,30 @@ a:hover{
 	float: left;
 	display: inline-block;
 	text-decoration: none;
-	background-color: #3494e638;
-	color: #14171a;;
-	color: #14171a;
+	background-color: white;
+
+	color: #7dc21e;
 	padding: 0 10px;
-	margin: 0 2px;
+	margin-right: 2px;
 	height: 100%;
 	
 }
-
+.back:hover{
+	color: white;
+    background: #7dc21e;
+    border-color: #7dc21e;
+}
 .refresh{
 	padding: 0 4px;
 	display: inline-block;
-	background-color: #3494e638;
-	color: #14171a;
+	background-color: white;
+	color: #7dc21e;
 	height: 100%;
+}
+.refresh:hover{
+	color: white;
+    background: #7dc21e;
+    border-color: #7dc21e;
 }
 
 .newTweet{
@@ -204,7 +225,7 @@ a:hover{
 #time{
 	display: inline-block;
 	float: right;
-	padding: 0 2px;
+	padding: 0 7px;
 	font-size: 12px;
 	margin: 0;
 	white-space: pre-wrap;
