@@ -19,10 +19,13 @@
           <button class = "btn" name = "submit" type = "submit">Tweet</button>
           <span class = "message" > Tweeted !!! </span>
           <textarea id = "textArea"  cols = "150" rows= "5"></textarea>
-
-        </div>  
-        <div id = "noti"> Back </div>
-        <span class = 'notification'></span>
+ 
+        </div> 
+        <div class = "notiBar">
+          <span id = "n"><a class = "back" href="javascript:;">back</a> </span>
+          <span id = "n"><a class = "refresh" href="javascript:;">refresh</a></span>
+          <span id = "n"><a class = 'notification' href="javascript:;"></a></span>
+        </div>   
         <div class = "container"></div>
       
     </div>
@@ -34,29 +37,40 @@
           var index = 0;
           var oldTweets = streams.home.length;
           var newTweets = 0;
-
-          generateTweets();
-          checkNewTweets(oldTweets);
+          var bol = false;
+          
+          generateTweets(index, $container);
+          generateEvents();   
+          checkNewTweets(oldTweets, newTweets);
           generateCurrentUserTweet();
           filterByUserName();
-          generateEvents();
 
           function  checkNewTweets(oldTweets){
-            var currentTweets = count();
+            var currentTweets =streams.home.length;
             if(currentTweets > oldTweets){
               newTweets += (currentTweets - oldTweets);
               oldTweets = currentTweets;
             }
+
             setTimeout(checkNewTweets, 4000, oldTweets);
-            $(".notification").text("You have " + newTweets + " new Tweets");
-            $(".notification").slideDown(400);
-          }
+            $(".notification").text("Click here to check " + newTweets + " new Tweets");
+            $(".notification").hide();
+            $(".notification").slideDown(600);
 
-          function count(){
-            return streams.home.length;
+            $(".notification").click(function () {
+              $(".content").addClass('active');
+              newTweets = 0;
+              $(".notification").fadeOut();
+              $(".tweetBox").fadeIn();
+              $(".back").fadeOut();
+              $(".refresh").fadeOut();
+            
+            })    
+            
           }
+      });
 
-          function generateTweets(){
+          function generateTweets(index, $container){
             
               while(index < streams.home.length){
                 var tag = {};
@@ -64,13 +78,11 @@
               //  var $username, $userTag, $itemHeaderGroup, $time, $avater, $tweet, $content, $timesAgo;
                 var timeStamp = streams.home[index].create_at;
                 tag = generateTag(tag, index);
-                appendTag(tag, tweet);
+                appendTag(tag, tweet, $container);
                 calculateTimesAgo(index);
                 index ++;
               }
-               setTimeout(function(){
-                generateTweets();
-                }, 4000);
+               setTimeout(generateTweets, 4000, index, $container);
             }
 
           function generateTag(tag, index){
@@ -85,7 +97,7 @@
             return tag;
           }
 
-          function appendTag(tag, tweet, timeStamp) {
+          function appendTag(tag, tweet, $container, timeStamp) {
             tag.$username.text(tweet.user);
             tag.$userTag.text('@' + tweet.user);
             tag.$tweet.text(tweet.message);
@@ -131,21 +143,36 @@
               $("body").on('click', '.username', function (event) {
                 $("div.content.active").removeClass('active');
                 $(".tweetBox").fadeOut(0);
-                $("#noti").fadeIn(0);
+                $(".back").fadeIn(0);
+                $(".refresh").fadeIn(0);
 
                 var currentUser = $(this).text();
                 var username = $(".username");
                 var currentUserArray = username.filter(function (index) {
                   return $(this).text() === currentUser;
                 }).each(function (index) {
-                  $(this).parents().eq(1).addClass('active');
+                  $(this).parents().eq(1).addClass('active')
+                  //$(this).parents().eq(1).attr('display', 'block').slideDown("400");;
                 })
 
+              $("body").on('click', '.refresh', function (event) {
+               $("div.content.active").removeClass('active');
+                $(".tweetBox").fadeOut(0);
+                var username = $(".username");
+                var currentUserArray = username.filter(function (index) {
+                  return $(this).text() === currentUser;
+                }).each(function (index) {
+                  $(this).parents().eq(1).addClass('active').slideDown(400);
+                 // $(this).parents().eq(1).attr('display', 'block').slideDown("400");
+                })
+              })
             })
           }
           function generateEvents() {
             $("#textArea").hide();
-            $("#noti").hide();
+            $(".back").hide();
+            $(".refresh").hide();
+            $(".notification").hide();
             $(".content").addClass('active');
 
             $(".textBox").click(function (event) {
@@ -153,22 +180,15 @@
               event.stopPropagation();
             })
 
-            $(".notification").click(function (event) {
-              $(".content").addClass('active'); 
-              newTweets = 0;
-              $(".notification").slideUp(400);
-              $(".tweetBox").fadeIn();
-              $("#noti").fadeOut();
-            })
-
-            $("#noti").click(function (event) {
-              $("#noti").fadeOut(0);
+            $(".back").click(function (event) {
+              $(".back").fadeOut(0);
               $(".tweetBox").fadeIn(0);
+              $(".refresh").fadeOut(0);
               $(".content").addClass('active');  
             })
           }
-         
-      });
+
+          
        </script>
 
   </body>
