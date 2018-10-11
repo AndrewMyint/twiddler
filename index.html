@@ -15,15 +15,16 @@
  
         <div class = "tweetBox"> 
           <img id = "avater" class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"> 
-          <input id = "currentUser" class = "textBox" type="textBox" name="loginName" placeholder="username">
-          <button class = "btn" name = "submit" type = "submit">Tweet</button>
-          <span class = "message" > Tweeted !!! </span>
-          <textarea id = "textArea"  cols = "150" rows= "5"></textarea>
+          <input id = "currentUser" class = "textBox" type="text" name="loginName" placeholder="username">
+          <button class = "btn" name = "submit" type = "button">Tweet</button>
+          <span class = "message" > Tweeted !!!    <img id = 'logo' src="logo.png"></span>
+          <textarea id = "textArea"  type= "text" cols = "150" rows= "5"></textarea>
+
  
         </div> 
         <div class = "notiBar">
-          <span id = "n"><a class = "back" href="javascript:;">back</a> </span>
-          <span id = "n"><a class = "refresh" href="javascript:;">refresh</a></span>
+          <btn id = "btn1" class = "back btn1" href="javascript:;">back</btn> </span>
+          <btn id = "btn1" class = "refresh btn1" href="javascript:;">refresh</btn></span>
           <span id = "n"><a class = 'notification' href="javascript:;"></a></span>
         </div>   
         <div class = "container"></div>
@@ -121,7 +122,7 @@
 
           function generateCurrentUserTweet(){
               $("button").click(function (event) {
-             
+              
               var newTweet = $("#textArea").val();
               var currentUser = $("#currentUser").val();
 
@@ -131,7 +132,8 @@
               tweet.created_at = new Date();
               streams.users[currentUser] = [];
               addTweet(tweet);
-
+              document.getElementById("currentUser").value = "";
+              document.getElementById("textArea").value = "";
               $(".message").addClass("active");
               setTimeout(function () {
                 $(".message").removeClass("active");
@@ -154,6 +156,7 @@
                   $(this).parents().eq(1).addClass('active')
                   //$(this).parents().eq(1).attr('display', 'block').slideDown("400");;
                 })
+                
 
               $("body").on('click', '.refresh', function (event) {
                $("div.content.active").removeClass('active');
@@ -176,7 +179,7 @@
             $(".content").addClass('active');
 
             $(".textBox").click(function (event) {
-              $("#textArea").slideToggle(200);
+              $("#textArea").slideDown(200);
               event.stopPropagation();
             })
 
@@ -186,6 +189,17 @@
               $(".refresh").fadeOut(0);
               $(".content").addClass('active');  
             })
+
+            $('body').click(function (event) {
+              $('#textArea').slideUp(200);
+            })
+            $('#textArea').click(function (event) {
+              event.stopPropagation();
+            })
+          }
+          function clearText() {
+             document.getElementByClass("textBox").value = "";
+             document.getElementById("textArea").value = "";
           }
 
           
