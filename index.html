@@ -35,71 +35,70 @@
           var oldTweets = streams.home.length;
           var newTweets = 0;
 
-          generateTweet();
-          checkNewTweet(oldTweets);
+          generateTweets();
+          checkNewTweets(oldTweets);
+          generateCurrentUserTweet();
+          filterByUserName();
+          generateEvents();
 
-          function  checkNewTweet(oldTweets){
-           // console.log("old Tweets " + oldTweets);
+          function  checkNewTweets(oldTweets){
             var currentTweets = count();
             if(currentTweets > oldTweets){
               newTweets += (currentTweets - oldTweets);
               oldTweets = currentTweets;
             }
-            setTimeout(checkNewTweet, 4100, oldTweets);
+            setTimeout(checkNewTweets, 4000, oldTweets);
             $(".notification").text("You have " + newTweets + " new Tweets");
             $(".notification").slideDown(400);
-            //console.log("currentTweets " + currentTweets);
-            //console.log("new Tweets " + newTweets);
           }
-
 
           function count(){
             return streams.home.length;
           }
 
-          function generateTweet(){
-         
+          function generateTweets(){
+            
               while(index < streams.home.length){
+                var tag = {};
                 var tweet = streams.home[index];
-                var $username, $userTag, $itemHeaderGroup, $time, $avater, $tweet, $content, $timesAgo;
+              //  var $username, $userTag, $itemHeaderGroup, $time, $avater, $tweet, $content, $timesAgo;
                 var timeStamp = streams.home[index].create_at;
-                generateTag(index);
-                appendTag(tweet);
+                tag = generateTag(tag, index);
+                appendTag(tag, tweet);
                 calculateTimesAgo(index);
                 index ++;
               }
                setTimeout(function(){
-                generateTweet();
+                generateTweets();
                 }, 4000);
             }
 
-          function generateTag(index){
-            $username = $('<a href="javascript:;" class = "username"> </a>');
-            $userTag = $('<span class = "userTag"> </span>')
-            $timesAgo = $('<span id = "timesAgo" class =' + index + '> </span>');
-            $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
-            $time = $('<span id = "time"> </span>');
-            $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
-            $tweet = $('<div class = "tweet"><p> </p></div>');
-            $content = $('<div class = "content"> </div>');
+          function generateTag(tag, index){
+            tag.$username = $('<a href="javascript:;" class = "username"> </a>');
+            tag.$userTag = $('<span class = "userTag"> </span>')
+            tag.$timesAgo = $('<span id = "timesAgo" class =' + index + '> </span>');
+            tag.$itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
+            tag.$time = $('<span id = "time"> </span>');
+            tag.$avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
+            tag.$tweet = $('<div class = "tweet"><p> </p></div>');
+            tag.$content = $('<div class = "content"> </div>');
+            return tag;
           }
 
-          function appendTag(tweet, timeStamp) {
-            $username.text(tweet.user);
-            $userTag.text('@' + tweet.user);
-            $tweet.text(tweet.message);
-            $timesAgo.text("- " + moment(timeStamp).fromNow());
-
-            $time.text(moment(timeStamp).format("h:mm a - D MMM YYYY"))
-
-            $username.appendTo($itemHeaderGroup);
-            $userTag.appendTo($itemHeaderGroup);
-            $timesAgo.appendTo($itemHeaderGroup);
-            $avater.appendTo($content); 
-            $itemHeaderGroup.appendTo($content);
-            $tweet.appendTo($content);
-            $time.appendTo($content); 
-            $content.prependTo($container);
+          function appendTag(tag, tweet, timeStamp) {
+            tag.$username.text(tweet.user);
+            tag.$userTag.text('@' + tweet.user);
+            tag.$tweet.text(tweet.message);
+            tag.$timesAgo.text("- " + moment(timeStamp).fromNow());
+            tag.$time.text(moment(timeStamp).format("h:mm a - D MMM YYYY"));
+            tag.$username.appendTo(tag.$itemHeaderGroup);
+            tag.$userTag.appendTo(tag.$itemHeaderGroup);
+            tag.$timesAgo.appendTo(tag.$itemHeaderGroup);
+            tag.$avater.appendTo(tag.$content); 
+            tag.$itemHeaderGroup.appendTo(tag.$content);
+            tag.$tweet.appendTo(tag.$content);
+            tag.$time.appendTo(tag.$content); 
+            tag.$content.prependTo($container);
           }
 
           function calculateTimesAgo(index){
@@ -107,75 +106,32 @@
                  $("." + index ).html("- " + moment(streams.home[index].created_at).fromNow());
             }, 2000, index)                  
           }
-          
-          $("#textArea").hide();
-          $("#noti").hide();
-          $(".content").addClass('active');
 
-          $(".textBox").click(function (event) {
-            $("#textArea").slideToggle(200);
-            event.stopPropagation();
-          })
+          function generateCurrentUserTweet(){
+              $("button").click(function (event) {
+             
+              var newTweet = $("#textArea").val();
+              var currentUser = $("#currentUser").val();
 
-          $(".notification").click(function (event) {
-            $(".content").addClass('active'); 
-            newTweets = 0;
-            $(".notification").slideUp(400);
-            $(".tweetBox").fadeIn();
-            $("#noti").fadeOut();
-          })
+              var tweet = {};
+              tweet.user = currentUser;
+              tweet.message = newTweet; 
+              tweet.created_at = new Date();
+              streams.users[currentUser] = [];
+              addTweet(tweet);
 
-          $("button").click(function (event) {
-           
-            var timeStamp = new Date();
-            var time = moment().format("h:mm a - D MMM YYYY");
-
-            var newTweet = $("#textArea").val();
-            var currentUser = $("#currentUser").val();
-            var $username = $('<a href="javascript:;" class = "username"> </a>');
-            var $userTag = $('<span class = "userTag"> </span>');
-            var $timesAgo = $('<span id = "timesAgo" </span>');
-            var $time = $('<span id = "time"> </span>');
-            var $itemHeaderGroup = $('<div class = itemHeaderGroup></div>');
-            var $avater = $('<img class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png">')
-            var $tweet = $('<div class = "tweet"><p> </p></div>')
-            var $content = $('<div class = "content"> </div>');
-
-            $username.text(currentUser);
-            $userTag.text('@' + currentUser);
-            $timesAgo.text("- " + moment(timeStamp).fromNow());
-            $tweet.text(newTweet);
-            $time.text(time);
-            
-            $username.appendTo($itemHeaderGroup)
-            $userTag.appendTo($itemHeaderGroup);
-           
-            $timesAgo.appendTo($itemHeaderGroup);
-            $avater.appendTo($content);
-            $itemHeaderGroup.appendTo($content); 
-            $tweet.appendTo($content); 
-            $time.appendTo($content);    
-
-            $content.prependTo($container);
-            $(".message").addClass("active");
-
-            setTimeout(function () {
-              $(".message").removeClass("active");
-            }, 2000)
-
-            setInterval(function() {
-              $timesAgo.html("- " + moment(timeStamp).fromNow());
-            }, 2000);
-          })
-          filterByUserName();
+              $(".message").addClass("active");
+              setTimeout(function () {
+                $(".message").removeClass("active");
+              }, 2000)
+            })
+          }
 
           function filterByUserName(username){
               $("body").on('click', '.username', function (event) {
-              //alert($(this).$(".content"));
                 $("div.content.active").removeClass('active');
                 $(".tweetBox").fadeOut(0);
                 $("#noti").fadeIn(0);
-
 
                 var currentUser = $(this).text();
                 var username = $(".username");
@@ -187,13 +143,31 @@
 
             })
           }
+          function generateEvents() {
+            $("#textArea").hide();
+            $("#noti").hide();
+            $(".content").addClass('active');
 
-          $("#noti").click(function (event) {
-            $("#noti").fadeOut(0);
-            $(".tweetBox").fadeIn(0);
-            $(".content").addClass('active');  
-          })
+            $(".textBox").click(function (event) {
+              $("#textArea").slideToggle(200);
+              event.stopPropagation();
+            })
 
+            $(".notification").click(function (event) {
+              $(".content").addClass('active'); 
+              newTweets = 0;
+              $(".notification").slideUp(400);
+              $(".tweetBox").fadeIn();
+              $("#noti").fadeOut();
+            })
+
+            $("#noti").click(function (event) {
+              $("#noti").fadeOut(0);
+              $(".tweetBox").fadeIn(0);
+              $(".content").addClass('active');  
+            })
+          }
+         
       });
        </script>
 
