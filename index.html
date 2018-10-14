@@ -5,26 +5,31 @@
     <script src="data_generator.js"></script>
     <script src="node_modules/moment/moment.js"></script>
     <link rel = "stylesheet" type = "text/css" href = "style.css">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300" rel="stylesheet">
+
   </head>
   <body>
     <div class = 'header'>
-      <h1 id = 'head'>Twiddler</h1>
+      <h1 id = 'head'>Twittler</h1>
+      <h2>/Home</h2>
     </div>
     
     <div class = "head-container">
  
         <div class = "tweetBox"> 
           <img id = "avater" class = "avater" src = "https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"> 
-          <input id = "currentUser" class = "textBox" type="text" name="loginName" placeholder="username">
+          <input id = "currentUser" class = "textBox" type="text" name="loginName" placeholder="Username">
           <button class = "btn" name = "submit" type = "button">Tweet</button>
-          <span class = "message" > Tweeted !!!    <img id = 'logo' src="logo.png"></span>
-          <textarea id = "textArea"  type= "text" cols = "150" rows= "5"></textarea>
+          <span class = "message" > Tweeted !!!    </span>
+          <textarea id = "textArea"  type= "text" cols = "150" rows= "5" placeholder="Tweet something"></textarea>
 
  
         </div> 
         <div class = "notiBar">
-          <btn id = "btn1" class = "back btn1" href="javascript:;">back</btn> </span>
-          <btn id = "btn1" class = "refresh btn1" href="javascript:;">refresh</btn></span>
+          <button id = "btn1" class = "back btn1" href="javascript:;">back</button> </span>
+          <button id = "btn1" class = "refresh btn1" href="javascript:;">refresh</button></span>
           <span id = "n"><a class = 'notification' href="javascript:;"></a></span>
         </div>   
         <div class = "container"></div>
@@ -46,20 +51,22 @@
           generateCurrentUserTweet();
           filterByUserName();
 
+          //check the new generated tweets and show the notification for new tweets
           function  checkNewTweets(oldTweets){
             var currentTweets =streams.home.length;
             if(currentTweets > oldTweets){
               newTweets += (currentTweets - oldTweets);
               oldTweets = currentTweets;
             }
-
+            //call checkNewTweets again with setTimeout to update notification every seconds
             setTimeout(checkNewTweets, 4000, oldTweets);
             $(".notification").text("Click here to check " + newTweets + " new Tweets");
             $(".notification").hide();
             $(".notification").slideDown(600);
-
+            // if the notifcation is clicked all the tweets will be shown
             $(".notification").click(function () {
               $(".content").addClass('active');
+              $("h2").text("/Home");
               newTweets = 0;
               $(".notification").fadeOut();
               $(".tweetBox").fadeIn();
@@ -70,22 +77,22 @@
             
           }
       });
-
+          //generate auto tweets
           function generateTweets(index, $container){
             
               while(index < streams.home.length){
                 var tag = {};
                 var tweet = streams.home[index];
-              //  var $username, $userTag, $itemHeaderGroup, $time, $avater, $tweet, $content, $timesAgo;
                 var timeStamp = streams.home[index].create_at;
                 tag = generateTag(tag, index);
                 appendTag(tag, tweet, $container);
                 calculateTimesAgo(index);
                 index ++;
               }
+              //call the generateTweets again after the time limit
                setTimeout(generateTweets, 4000, index, $container);
             }
-
+          //generate html tag
           function generateTag(tag, index){
             tag.$username = $('<a href="javascript:;" class = "username"> </a>');
             tag.$userTag = $('<span class = "userTag"> </span>')
@@ -97,7 +104,7 @@
             tag.$content = $('<div class = "content"> </div>');
             return tag;
           }
-
+          //initialize the data into tag and append to the '.container' tag
           function appendTag(tag, tweet, $container, timeStamp) {
             tag.$username.text(tweet.user);
             tag.$userTag.text('@' + tweet.user);
@@ -113,34 +120,40 @@
             tag.$time.appendTo(tag.$content); 
             tag.$content.prependTo($container);
           }
-
+          // calculate each timeAgo for each tweet 
           function calculateTimesAgo(index){
             setInterval(function(index){
                  $("." + index ).html("- " + moment(streams.home[index].created_at).fromNow());
             }, 2000, index)                  
           }
-
+          //generate new username and tweet
           function generateCurrentUserTweet(){
-              $("button").click(function (event) {
-              
+              $(".btn").click(function (event) {
+              //initialize value from textBox and textArea
               var newTweet = $("#textArea").val();
               var currentUser = $("#currentUser").val();
-
+              if (currentUser === ""){
+                currentUser = "unknown";
+              }
+              //collect username, tweet, and date in to an object
               var tweet = {};
               tweet.user = currentUser;
               tweet.message = newTweet; 
               tweet.created_at = new Date();
               streams.users[currentUser] = [];
+              //a function call from data_generator.js to add the new user data to the stream
               addTweet(tweet);
+              // clear the user's input 
               document.getElementById("currentUser").value = "";
               document.getElementById("textArea").value = "";
+              //toggle message("Tweeted !!!") to confirm new tweet is created
               $(".message").addClass("active");
               setTimeout(function () {
                 $(".message").removeClass("active");
               }, 2000)
             })
           }
-
+          // filter the username according to the user choice
           function filterByUserName(username){
               $("body").on('click', '.username', function (event) {
                 $("div.content.active").removeClass('active');
@@ -149,6 +162,7 @@
                 $(".refresh").fadeIn(0);
 
                 var currentUser = $(this).text();
+                $("h2").text("/" + currentUser + "'s profile");
                 var username = $(".username");
                 var currentUserArray = username.filter(function (index) {
                   return $(this).text() === currentUser;
@@ -157,7 +171,7 @@
                   //$(this).parents().eq(1).attr('display', 'block').slideDown("400");;
                 })
                 
-
+          // refresh the userprofile when refresh button is clicked
               $("body").on('click', '.refresh', function (event) {
                $("div.content.active").removeClass('active');
                 $(".tweetBox").fadeOut(0);
@@ -171,6 +185,8 @@
               })
             })
           }
+
+          // generate event for textBox, textArea, back, and refresh button
           function generateEvents() {
             $("#textArea").hide();
             $(".back").hide();
@@ -187,21 +203,18 @@
               $(".back").fadeOut(0);
               $(".tweetBox").fadeIn(0);
               $(".refresh").fadeOut(0);
-              $(".content").addClass('active');  
+              $(".content").addClass('active');
+              $("h2").text("/Home");  
             })
 
             $('body').click(function (event) {
               $('#textArea').slideUp(200);
             })
             $('#textArea').click(function (event) {
+              //avoid confict event between element
               event.stopPropagation();
             })
           }
-          function clearText() {
-             document.getElementByClass("textBox").value = "";
-             document.getElementById("textArea").value = "";
-          }
-
           
        </script>
 

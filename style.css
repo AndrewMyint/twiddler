@@ -1,24 +1,33 @@
 body{
 	margin : 0;
-	background-color: #f1f1f1;
-	font-family: Helvetica;
+	
+	font-family: 'Quicksand', sans-serif;
 	font-size: 14px;
+	background: #ad5389;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to left, #3c1053, #ad5389);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to left, #3c1053, #ad5389); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 }
 h1{
-	display: block;
-	background: #7dc21e;
+	display: inline-block;
+	background: none;
 	box-sizing: border-box;
-	font-size: 34px;
+	font-size: 60px;
 	color: white;
-	margin: 0;
+	margin-left: 7%;
 	height: 100px;
-	font-family: Helvetica;
+	font-family: 'Quicksand', sans-serif;
 	padding: 30px 0;
-	padding-left: 30px;
+	padding: 5px 10px 20px 0;
 	max-width: 100%;
+	font-weight: 100;
+	letter-spacing: 10px;
+	text-transform: uppercase;
 }
-
+h2{
+	display: inline-block;
+	color: white;
+}
 p{
 	/*display: inline-block;*/
 	word-wrap: break-word;
@@ -33,20 +42,21 @@ a{
 	text-decoration: none;
 }
 a:hover{
-	color: #7dc21e;
+	color: #51234c;
 }
 .head-container{
 	
 	min-width: 700px;
-	margin: 0 20%;
+	margin: 0 15%;
 
 }
 
 .tweetBox{
   	margin: auto;
  	word-wrap: break-word;
-	background-color: white;
+	border: 1px solid #948d8d;
 	padding-bottom: 10px;
+	border-radius: 40px;
 }
 #avater{
 	padding-top: 0px;
@@ -60,7 +70,6 @@ a:hover{
 	width: 40%;
   	height: 15px;
   	border-radius: 10px;
- 	outline: none;
  	border: 1px solid #7dc21e;
 }
 
@@ -73,7 +82,7 @@ a:hover{
 	border-radius: 10px;
 	margin-left: 77px;
 	border-color: #7dc21e;
-	outline: none;
+
 }
 
 .btn{
@@ -84,15 +93,16 @@ a:hover{
 	height: 40px;
   	width: 100px;
   	border-radius: 20px;
-    color: #7dc21e;
-    border-color: #7dc21e;
+    color: white;
+    border-color: white;
     background: transparent;
-    outline: none;
+    
 }
 .btn:hover{
-	color: white;
-    background: #7dc21e;
-    border-color: #7dc21e;
+	color: #ef8888;
+    background: #57254f;
+    outline: none;
+    
 }
 
 .message{
@@ -100,21 +110,24 @@ a:hover{
 }
 .message.active{
 	display: inline-block;
-	color: #7dc21e;
+	color: white;
 	font-weight: normal;
 	margin-left: 35px;
-	font-style: oblique;
 	font-size: 13px;
+	letter-spacing: 5px;
+	transition: 0.5s;
 
 }
 #logo{
 	margin-left: 10px;
+	
+ 	
 }
 
 .notiBar{
 	display: block;
+	margin-top: 10px;
 	border: none;
-	background-color: white;
 	width: 100%;
 	height: 20px;
 	text-align: center;	
@@ -125,30 +138,35 @@ a:hover{
 	display: inline-block;
 	text-decoration: none;
 	background-color: none;
-	color: #7dc21e;
+	color: white;
     border-color: #7dc21e;
 	height: 100%;
 	padding: 0 10px;
 	font-size: 12px;
 }
+.notification:hover{
+	color: #ef8888;
+}
 
 .btn1{
 	float: left;
-
 	display: inline-block;
 	text-decoration: none;
 	border: none;
 	background: none;
 	text-align: center;
-	color: #7dc21e;
+	color: white;
 	padding: 0 10px;
 	margin-right: 2px;
 	height: 100%;
+	font-size: 14px;
+	outline: none;
 }
 .btn1:hover{
-	color: white;
-    background: #7dc21e;
-    border-color: #7dc21e;
+	color: #51234c;
+}
+.back{
+	margin-left: 30px
 }
 
 
@@ -164,24 +182,25 @@ a:hover{
 
 }
 .content{
-	display: none;
-	margin: 0;
+	display: none; 
+	margin: 2px 0px 2px 0px;
 	width : 100;
-	background-color: white;
-	border-top: 2px solid #f1f1f1;
+	border: 0.5px solid #948d8d;
+	
 	word-wrap: break-word;
 	overflow: auto;
-	position: relative;
+	border-radius: 40px;
+	
 }
 .content.active{
 	display: block;
-	margin: 0;
+	margin: 5px 0px 5px 0px;
 	width : 100;
-	background-color: white;
-	border-top: 2px solid #f1f1f1;
+	
+	border: 0.5px solid #948d8d;
 	word-wrap: break-word;
 	overflow: auto;
-	position: relative;
+	border-radius: 40px;
 }
 .itemHeaderGroup{
 	display: block;
@@ -191,9 +210,9 @@ a:hover{
 .username{
 	display: inline-block;
 	margin: 10px 5px;
-	color: #14171a;
-    font-size: 14px;
-    font-weight: bold;
+	color: #ef8888;
+    font-size: 16px;
+    font-weight: 900;
     text-decoration: none;
 }
 
@@ -201,7 +220,7 @@ a:hover{
 .userTag{
 	display: inline-block;
 	margin: 0;
-	color: #657786;
+	color: #acd8fd;
     font-size: 14px;
     font-weight: lighter;
 
@@ -224,7 +243,8 @@ a:hover{
 	float: right;
 	padding: 0 7px;
 	font-size: 12px;
-	margin: 0;
+	margin-right: 5%;
+	color: #acd8fd;
 	white-space: pre-wrap;
 	font-weight: lighter;
 	
@@ -235,7 +255,7 @@ a:hover{
 	font-size: 14px;
 	margin: 0;
 	font-weight: lighter;
-	color: #657786;
+	color: #acd8fd;
 }
 
 .tweet{
@@ -244,6 +264,7 @@ a:hover{
 	padding: 9px 6px;
 	font-size: 14px;
 	margin: 0;
+	color: white;
 	white-space: pre-wrap;
 
 }
