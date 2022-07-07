@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/AndrewMyint/rpt12-twiddler#readme",
   "dependencies": {
-    "moment": "^2.22.2"
+    "moment": "^2.29.4"
   }
 }
